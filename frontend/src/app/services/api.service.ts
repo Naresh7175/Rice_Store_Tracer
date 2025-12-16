@@ -37,7 +37,7 @@ export interface SaleRequest {
     providedIn: 'root'
 })
 export class ApiService {
-    private baseUrl = 'http://localhost:8080/api';
+    private baseUrl = 'https://rice-store-tracer-backend.onrender.com/api';
 
     constructor(private http: HttpClient) { }
 
@@ -85,3 +85,4 @@ export class ApiService {
 
     // Removed uploadImage mechanism as we use base64 now
 }
+
