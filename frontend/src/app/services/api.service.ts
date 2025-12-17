@@ -1,45 +1,45 @@
-import{Injectable}from'@angular/core';
-import {HttpClient}from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface Product {
-id?: number;
-name: string;
-brand: string;
-quantity: number;
-price: number;
-description?: string;
-image?: string;
+    id?: number;
+    name: string;
+    brand: string;
+    quantity: number;
+    price: number;
+    description?: string;
+    image?: string;
 }
 
 export interface Customer {
-id?: number;
-name: string;
-phone: string;
-address: string;
-totalDebt: number;
+    id?: number;
+    name: string;
+    phone: string;
+    address: string;
+    totalDebt: number;
 }
 
 export interface SaleItemRequest {
-productId: number;
-quantity: number;
-unit?: string;
+    productId: number;
+    quantity: number;
+    unit?: string;
 }
 
 export interface SaleRequest {
-customerId: number;
-items: SaleItemRequest[];
-discount: number;
-paidAmount: number;
+    customerId: number;
+    items: SaleItemRequest[];
+    discount: number;
+    paidAmount: number;
 }
 
 @Injectable({
-providedIn: 'root'
+    providedIn: 'root'
 })
 export class ApiService {
 private baseUrl = 'https://rice-store-tracer-backend.onrender.com/api';
 
-constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
     // Inventory
     getProducts(): Observable<Product[]> {
@@ -73,18 +73,18 @@ constructor(private http: HttpClient) { }
     }
 
     getSales(month?: number, year?: number) {
-  let params: any = {};
+        let params: any = {};
 
-  if (month !== undefined) {
-    params.month = month;
-  }
+        if (month !== undefined) {
+            params.month = month;
+        }
 
-  if (year !== undefined) {
-    params.year = year;
-  }
+        if (year !== undefined) {
+            params.year = year;
+        }
 
-  return this.http.get<any[]>('/api/sales', { params });
-}
+        return this.http.get<any[]>(`${this.baseUrl}/reports/sales`, { params });
+    }
 
 
     getDashboardStats(): Observable<any> {

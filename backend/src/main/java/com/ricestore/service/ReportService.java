@@ -41,7 +41,8 @@ public class ReportService {
             start = LocalDateTime.of(yearParams, monthParams, 1, 0, 0, 0);
             end = start.with(TemporalAdjusters.lastDayOfMonth()).withHour(23).withMinute(59).withSecond(59);
         } else {
-            start = getStartDateForPeriod(period, now);
+            String effectivePeriod = (period != null) ? period : "monthly";
+            start = getStartDateForPeriod(effectivePeriod, now);
         }
 
         return saleRepository.findBySaleDateBetween(start, end);
