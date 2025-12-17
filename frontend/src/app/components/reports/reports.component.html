@@ -1,129 +1,156 @@
 <div class="container">
-    <h2>Reports & Analytics</h2>
+  <h2>Reports & Analytics</h2>
 
-    <div class="dashboard-grid">
-        <!-- Revenue Card -->
-        <div class="stat-card clickable" (click)="filterBy('ALL')" [class.active-card]="currentFilter === 'ALL'">
-            <div class="icon-box icon-revenue">
-                <span class="material-icons-round">payments</span>
-            </div>
-            <div class="stat-content">
-                <h3>Total Revenue (Monthly)</h3>
-                <span class="stat-value">{{ dashboardStats.revenue | currency:'INR' }}</span>
-            </div>
-        </div>
-
-        <!-- Bags Sold Card -->
-        <div class="stat-card clickable" (click)="filterBy('ALL')" [class.active-card]="currentFilter === 'ALL'">
-            <div class="icon-box icon-bags">
-                <span class="material-icons-round">inventory_2</span>
-            </div>
-            <div class="stat-content">
-                <h3>Bags Sold (Monthly)</h3>
-                <span class="stat-value">{{ dashboardStats.bagsSold | number:'1.0-1' }}</span>
-            </div>
-        </div>
-
-        <!-- Pending Money Card -->
-        <div class="stat-card clickable" (click)="filterBy('PENDING')"
-            [class.active-card]="currentFilter === 'PENDING'">
-            <div class="icon-box icon-pending">
-                <span class="material-icons-round">pending_actions</span>
-            </div>
-            <div class="stat-content">
-                <h3>Total Pending Money</h3>
-                <span class="stat-value">{{ dashboardStats.pendingMoney | currency:'INR' }}</span>
-            </div>
-        </div>
+  <div class="dashboard-grid">
+    <!-- Revenue Card -->
+    <div class="stat-card clickable"
+         (click)="filterBy('ALL')"
+         [class.active-card]="currentFilter === 'ALL'">
+      <div class="icon-box icon-revenue">
+        <span class="material-icons-round">payments</span>
+      </div>
+      <div class="stat-content">
+        <h3>Total Revenue (Monthly)</h3>
+        <span class="stat-value">
+          {{ dashboardStats.revenue | currency:'INR' }}
+        </span>
+      </div>
     </div>
 
-    <!-- Detailed Reports -->
-    <div class="card">
-        <div class="header-actions report-header">
-            <h3>Detailed Reports: {{ currentFilter === 'PENDING' ? 'Pending Payments' : 'All Sales' }}</h3>
-            <div class="filter-section">
-                <!-- Search Box -->
-                <div class="form-group">
-                    <div class="search-box">
-                        <span class="material-icons-round search-icon">search</span>
-                        <input type="text" placeholder="Search Customer..." [(ngModel)]="searchTerm"
-                            (input)="applyFilter()">
-                    </div>
-                </div>
-
-                <!-- Time Period Filters -->
-                <div class="form-group">
-                    <select [(ngModel)]="period" (change)="loadData()">
-                        <option value="monthly">Monthly</option>
-                        <option value="quarterly">Quarterly</option>
-                        <option value="yearly">Yearly</option>
-                    </select>
-                </div>
-
-                <!-- Month/Year Specific Selectors (Visible only for Monthly) -->
-                <div class="form-group" *ngIf="period === 'monthly'">
-                    <select [(ngModel)]="selectedMonth" (change)="loadData()">
-                        <option *ngFor="let m of months" [ngValue]="m.val">{{ m.name }}</option>
-                    </select>
-                </div>
-                <div class="form-group" *ngIf="period === 'monthly'">
-                    <select [(ngModel)]="selectedYear" (change)="loadData()">
-                        <option *ngFor="let y of years" [ngValue]="y">{{ y }}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Customer</th>
-                        <th>Bags</th>
-                        <th>Total</th>
-                        <th>Discount</th>
-                        <th>Paid</th>
-                        <th>Balance</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let sale of filteredSales">
-                        <td>{{ sale.saleDate | date:'mediumDate' }}</td>
-                        <td>{{ sale.customer?.name }}</td>
-                        <td>
-                            <!-- Calculate bags for this sale for display? -->
-                            <!-- Simply iterating items or backend provides it. Let's do a simple calculation or just show - -->
-                            <span class="bag-badge">
-                                {{ sale.items ? sale.items.length : 0 }} Items
-                            </span>
-                        </td>
-                        <td>{{ sale.totalAmount | currency:'INR' }}</td>
-                        <td style="color: #ef4444">{{ sale.discount | currency:'INR' }}</td>
-                        <td style="color: #10b981">{{ sale.paidAmount | currency:'INR' }}</td>
-                        <td [style.color]="sale.balance > 0 ? '#ef4444' : 'inherit'"
-                            [style.fontWeight]="sale.balance > 0 ? '600' : 'normal'">
-                            {{ sale.balance | currency:'INR' }}
-                        </td>
-                    </tr>
-                    <tr *ngIf="filteredSales.length === 0">
-                        <td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 2rem;">
-                            No records found for this period.
-                        </td>
-                    </tr>
-                </tbody>
-                <!-- Footer with Totals -->
-                <tfoot>
-                    <tr class="total-row-footer">
-                        <td colspan="2">TOTALS</td>
-                        <td>{{ totalBagsSold | number:'1.0-1' }} Bags</td>
-                        <td></td>
-                        <td style="color: #ef4444">{{ totalDiscount | currency:'INR' }}</td>
-                        <td></td>
-                        <td style="color: #ef4444; font-weight: 700">{{ totalPending | currency:'INR' }}</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+    <!-- Bags Sold Card -->
+    <div class="stat-card clickable"
+         (click)="filterBy('ALL')"
+         [class.active-card]="currentFilter === 'ALL'">
+      <div class="icon-box icon-bags">
+        <span class="material-icons-round">inventory_2</span>
+      </div>
+      <div class="stat-content">
+        <h3>Bags Sold (Monthly)</h3>
+        <span class="stat-value">
+          {{ dashboardStats.bagsSold }}
+        </span>
+      </div>
     </div>
+
+    <!-- Pending Money Card -->
+    <div class="stat-card clickable"
+         (click)="filterBy('PENDING')"
+         [class.active-card]="currentFilter === 'PENDING'">
+      <div class="icon-box icon-pending">
+        <span class="material-icons-round">pending_actions</span>
+      </div>
+      <div class="stat-content">
+        <h3>Total Pending Money</h3>
+        <span class="stat-value">
+          {{ dashboardStats.pendingMoney | currency:'INR' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Reports -->
+  <div class="card">
+    <div class="header-actions report-header">
+      <h3>
+        Detailed Reports:
+        {{ currentFilter === 'PENDING' ? 'Pending Payments' : 'All Sales' }}
+      </h3>
+
+      <div class="filter-section">
+        <!-- Search Box -->
+        <div class="form-group search-group">
+          <div class="search-box">
+            <span class="material-icons-round search-icon">search</span>
+            <input type="text"
+                   placeholder="Search Customer..."
+                   [(ngModel)]="searchTerm"
+                   (input)="applyFilter()" />
+          </div>
+        </div>
+
+        <!-- Period -->
+        <div class="form-group">
+          <select [(ngModel)]="period" (change)="loadData()">
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+          </select>
+        </div>
+
+        <!-- Month -->
+        <div class="form-group" *ngIf="period === 'monthly'">
+          <select [(ngModel)]="selectedMonth" (change)="loadData()">
+            <option *ngFor="let m of months" [ngValue]="m.val">
+              {{ m.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Year -->
+        <div class="form-group" *ngIf="period === 'monthly'">
+          <select [(ngModel)]="selectedYear" (change)="loadData()">
+            <option *ngFor="let y of years" [ngValue]="y">
+              {{ y }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+        <tr>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Bags</th>
+          <th>Total</th>
+          <th>Discount</th>
+          <th>Paid</th>
+          <th>Balance</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let sale of filteredSales">
+          <td>{{ sale.saleDate | date:'mediumDate' }}</td>
+          <td>{{ sale.customer?.name }}</td>
+          <td>
+              <span class="bag-badge">
+                {{ sale.items ? sale.items.length : 0 }} Items
+              </span>
+          </td>
+          <td>{{ sale.totalAmount | currency:'INR' }}</td>
+          <td style="color:#ef4444">{{ sale.discount | currency:'INR' }}</td>
+          <td style="color:#10b981">{{ sale.paidAmount | currency:'INR' }}</td>
+          <td
+            [style.color]="sale.balance > 0 ? '#ef4444' : 'inherit'"
+            [style.fontWeight]="sale.balance > 0 ? '600' : 'normal'">
+            {{ sale.balance | currency:'INR' }}
+          </td>
+        </tr>
+
+        <tr *ngIf="filteredSales.length === 0">
+          <td colspan="7" style="text-align:center; padding:2rem;">
+            No records found for this period.
+          </td>
+        </tr>
+        </tbody>
+
+        <tfoot>
+        <tr class="total-row-footer">
+          <td colspan="2">TOTALS</td>
+          <td>{{ totalBagsSold }} Bags</td>
+          <td>{{ totalAmount | currency:'INR' }}</td>
+          <td style="color:#ef4444">{{ totalDiscount | currency:'INR' }}</td>
+          <td style="color:#10b981; font-weight:600">
+            {{ totalPaid | currency:'INR' }}
+          </td>
+          <td style="color:#ef4444; font-weight:700">
+            {{ totalPending | currency:'INR' }}
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
 </div>
