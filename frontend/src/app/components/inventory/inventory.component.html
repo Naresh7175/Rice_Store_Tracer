@@ -63,13 +63,17 @@
                             <img [src]="getImage(product)" alt="Product" class="product-thumb-large">
                         </div>
                     </td>
-                    <td>
-                        <div class="product-info">
-                            <span class="p-name">{{ product.name }}</span>
-                            <span class="p-brand">{{ product.brand }}</span>
-                            <small class="p-desc">{{ product.description }}</small>
-                        </div>
-                    </td>
+                  <td>
+                    <div class="product-info">
+                      <div class="p-title">
+                        <span class="p-name">{{ product.name }}</span>
+                        <small class="p-brand" *ngIf="product.brand">
+                          [{{ product.brand }}]
+                        </small>
+                      </div>
+                      <small class="p-desc">{{ product.description }}</small>
+                    </div>
+                  </td>
                     <td>
                         <span [class.low-stock]="product.quantity < 10" class="stock-badge">
                             {{ product.quantity | number:'1.0-2' }} Bags
