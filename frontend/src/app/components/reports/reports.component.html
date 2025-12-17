@@ -57,6 +57,7 @@
       </h3>
 
       <div class="filter-section">
+
         <!-- Search Box -->
         <div class="form-group search-group">
           <div class="search-box">
@@ -68,16 +69,8 @@
           </div>
         </div>
 
-        <!-- Period -->
+        <!-- Month Selector -->
         <div class="form-group">
-          <select [(ngModel)]="period" (change)="loadData()">
-            <option value="monthly">Monthly</option>
-            <option value="yearly">Yearly</option>
-          </select>
-        </div>
-
-        <!-- Month -->
-        <div class="form-group" *ngIf="period === 'monthly'">
           <select [(ngModel)]="selectedMonth" (change)="loadData()">
             <option *ngFor="let m of months" [ngValue]="m.val">
               {{ m.name }}
@@ -85,18 +78,19 @@
           </select>
         </div>
 
-        <!-- Year -->
-        <div class="form-group" *ngIf="period === 'monthly'">
+        <!-- Year Selector -->
+        <div class="form-group">
           <select [(ngModel)]="selectedYear" (change)="loadData()">
             <option *ngFor="let y of years" [ngValue]="y">
               {{ y }}
             </option>
           </select>
         </div>
-      </div>
-    </div>
 
-    <div class="table-container">
+      </div>
+
+
+      <div class="table-container">
       <table>
         <thead>
         <tr>

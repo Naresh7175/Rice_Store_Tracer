@@ -8,12 +8,11 @@ selector: 'app-reports',
 standalone: true,
 imports: [CommonModule, FormsModule],
 templateUrl: './reports.component.html',
-styleUrl: './reports.component.css'
+styleUrls: ['./reports.component.css']   // ✅ FIXED
 })
 export class ReportsComponent implements OnInit {
 
 /* ================== Filters ================== */
-period: string = 'monthly';
 currentFilter: string = 'ALL';
 searchTerm: string = '';
 
@@ -21,12 +20,18 @@ selectedMonth: number | null = null;
 selectedYear: number | null = null;
 
 months = [
-{ val: 1, name: 'January' }, { val: 2, name: 'February' },
-{ val: 3, name: 'March' }, { val: 4, name: 'April' },
-{ val: 5, name: 'May' }, { val: 6, name: 'June' },
-{ val: 7, name: 'July' }, { val: 8, name: 'August' },
-{ val: 9, name: 'September' }, { val: 10, name: 'October' },
-{ val: 11, name: 'November' }, { val: 12, name: 'December' }
+{ val: 1, name: 'January' },
+{ val: 2, name: 'February' },
+{ val: 3, name: 'March' },
+{ val: 4, name: 'April' },
+{ val: 5, name: 'May' },
+{ val: 6, name: 'June' },
+{ val: 7, name: 'July' },
+{ val: 8, name: 'August' },
+{ val: 9, name: 'September' },
+{ val: 10, name: 'October' },
+{ val: 11, name: 'November' },
+{ val: 12, name: 'December' }
 ];
 
 years: number[] = [];
@@ -65,10 +70,10 @@ constructor(private apiService: ApiService) {
 
   /* ================== Data Loading ================== */
   loadData(): void {
-    const month = this.period === 'monthly' ? this.selectedMonth ?? undefined : undefined;
-    const year = this.period === 'monthly' ? this.selectedYear ?? undefined : undefined;
+    const month = this.selectedMonth ?? undefined;
+    const year = this.selectedYear ?? undefined;
 
-    this.apiService.getSales(this.period, month, year).subscribe({
+    this.apiService.getSales(month, year).subscribe({
       next: (data) => {
         this.sales = data || [];
         this.applyFilter();
@@ -113,7 +118,6 @@ constructor(private apiService: ApiService) {
     this.totalAmount = 0;
 
     this.filteredSales.forEach(sale => {
-
       this.totalDiscount += sale.discount || 0;
       this.totalPending += sale.balance || 0;
       this.totalPaid += sale.paidAmount || 0;
@@ -128,9 +132,8 @@ constructor(private apiService: ApiService) {
       }
     });
 
-    /* Dashboard Cards */
     this.dashboardStats = {
-      revenue: this.totalPaid,     // collected money
+      revenue: this.totalPaid,
       bagsSold: this.totalBagsSold,
       pendingMoney: this.totalPending
     };
