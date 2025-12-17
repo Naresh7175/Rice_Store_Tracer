@@ -1,72 +1,82 @@
 <div class="container">
-    <div class="header-actions">
-        <h2>Customer Management</h2>
-        <button class="btn btn-primary btn-icon-only" (click)="toggleForm()">
-            <span class="material-icons-round">{{ showForm ? 'close' : 'person_add' }}</span>
-            {{ showForm ? 'Close' : 'Add New Customer' }}
-        </button>
+  <div class="header-actions">
+    <h2>Customer Management</h2>
+    <button class="btn btn-primary btn-icon-only" (click)="toggleForm()">
+      <span class="material-icons-round">
+        {{ showForm ? 'close' : 'person_add' }}
+      </span>
+      {{ showForm ? 'Close' : 'Add New Customer' }}
+    </button>
+  </div>
+
+  <!-- Toggleable Form -->
+  <div class="card form-card" *ngIf="showForm">
+    <h3>Add Customer</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" placeholder="Name" [(ngModel)]="newCustomer.name">
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" placeholder="Phone" [(ngModel)]="newCustomer.phone">
+      </div>
+      <div class="form-group full-width">
+        <label>Address</label>
+        <input type="text" placeholder="Address" [(ngModel)]="newCustomer.address">
+      </div>
+    </div>
+    <button class="btn btn-primary" (click)="addCustomer()">
+      <span class="material-icons-round">save</span>
+      Save Customer
+    </button>
+  </div>
+
+  <!-- Search & List -->
+  <div class="card table-container">
+    <div class="table-header-controls">
+      <h3>Customer List</h3>
+
+      <div class="search-box">
+        <span class="material-icons-round search-icon">search</span>
+        <input
+          type="text"
+          placeholder="Search by name or phone..."
+          [(ngModel)]="searchTerm"
+          (input)="applyFilter()">
+      </div>
     </div>
 
-    <!-- Toggleable Form -->
-    <div class="card form-card" *ngIf="showForm">
-        <h3>Add Customer</h3>
-        <div class="form-grid">
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" placeholder="Name" [(ngModel)]="newCustomer.name">
-            </div>
-            <div class="form-group">
-                <label>Phone</label>
-                <input type="text" placeholder="Phone" [(ngModel)]="newCustomer.phone">
-            </div>
-            <div class="form-group full-width">
-                <label>Address</label>
-                <input type="text" placeholder="Address" [(ngModel)]="newCustomer.address">
-            </div>
-        </div>
-        <button class="btn btn-primary" (click)="addCustomer()">
-            <span class="material-icons-round">save</span> Save Customer
-        </button>
-    </div>
 
-    <!-- Search & List -->
-    <div class="card table-container">
-        <div class="table-header-controls">
-            <h3>Customer List</h3>
-            <div class="search-box">
-                <span class="material-icons-round search-icon">search</span>
-                <input type="text" placeholder="Search by name or phone..." [(ngModel)]="searchTerm"
-                    (input)="applyFilter()">
-            </div>
-        </div>
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Total Debt</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let customer of filteredCustomers">
+        <td>{{ customer.id }}</td>
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.phone }}</td>
+        <td>{{ customer.address }}</td>
+        <td
+          [style.color]="customer.totalDebt > 0 ? '#ef4444' : 'inherit'"
+          [style.fontWeight]="customer.totalDebt > 0 ? '600' : 'normal'">
+          {{ customer.totalDebt | currency:'INR' }}
+        </td>
+      </tr>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Total Debt</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let customer of filteredCustomers">
-                    <td>{{ customer.id }}</td>
-                    <td>{{ customer.name }}</td>
-                    <td>{{ customer.phone }}</td>
-                    <td>{{ customer.address }}</td>
-                    <td [style.color]="customer.totalDebt > 0 ? '#ef4444' : 'inherit'"
-                        [style.fontWeight]="customer.totalDebt > 0 ? '600' : 'normal'">
-                        {{ customer.totalDebt | currency:'INR' }}
-                    </td>
-                </tr>
-                <tr *ngIf="filteredCustomers.length === 0">
-                    <td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 2rem;">
-                        No customers found.
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+      <tr *ngIf="filteredCustomers.length === 0">
+        <td colspan="5" style="text-align:center; padding:2rem;">
+          No customers found.
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
