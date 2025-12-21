@@ -1,3 +1,4 @@
+com\ricestore\config\WebConfig.class
 com\ricestore\dto\SaleRequest.class
 com\ricestore\model\Product.class
 com\ricestore\model\Customer.class
@@ -12,6 +13,7 @@ com\ricestore\model\Sale.class
 com\ricestore\service\SalesService.class
 com\ricestore\repository\CustomerRepository.class
 com\ricestore\controller\CustomerController.class
+com\ricestore\DbSetup.class
 com\ricestore\model\SaleItem.class
 com\ricestore\controller\InventoryController.class
 com\ricestore\service\InventoryService.class

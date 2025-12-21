@@ -1,33 +1,44 @@
 package com.ricestore.controller;
 
+import com.ricestore.model.Sale;
 import com.ricestore.service.ReportService;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/reports")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class ReportController {
 
     @Autowired
     private ReportService reportService;
 
-    @GetMapping("/revenue")
-    public Double getRevenue(@RequestParam String period,
-            @RequestParam(required = false) Integer month,
-            @RequestParam(required = false) Integer year) {
-        return reportService.getRevenue(period, month, year);
+    @GetMapping("/sales")
+    public List<Sale> getSales(
+        @RequestParam(required = false) Integer month,
+        @RequestParam(required = false) Integer year,
+        @RequestParam(required = false) Long customerId
+    ) {
+        return reportService.getSales(month, year, customerId);
     }
 
-    @GetMapping("/sales")
-    public java.util.List<com.ricestore.model.Sale> getSales(@RequestParam(required = false) String period,
-            @RequestParam(required = false) Integer month,
-            @RequestParam(required = false) Integer year) {
-        return reportService.getSales(period, month, year);
+    @GetMapping("/revenue")
+    public Double getRevenue(
+        @RequestParam(required = false) Integer month,
+        @RequestParam(required = false) Integer year,
+        @RequestParam(required = false) Long customerId
+    ) {
+        return reportService.getRevenue(month, year, customerId);
     }
 
     @GetMapping("/dashboard")
-    public java.util.Map<String, Object> getDashboardStats() {
-        return reportService.getDashboardStats();
+    public Map<String, Object> getDashboardStats(
+        @RequestParam(required = false) Integer month,
+        @RequestParam(required = false) Integer year
+    ) {
+        return reportService.getDashboardStats(month, year);
     }
 }
+

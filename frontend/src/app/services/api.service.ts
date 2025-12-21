@@ -37,7 +37,7 @@ export interface SaleRequest {
     providedIn: 'root'
 })
 export class ApiService {
-private baseUrl = 'https://rice-store-tracer-backend.onrender.com/api';
+    private baseUrl = 'http://localhost:8080/api';
 
     constructor(private http: HttpClient) { }
 
